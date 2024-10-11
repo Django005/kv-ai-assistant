@@ -1,0 +1,210 @@
+version: "3.1"
+
+slots:
+  language:
+    type: text
+    initial_value: "en"
+
+  project_id:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_llm
+  project_name:
+    type: text
+    mappings:
+      - type: from_llm
+  new_price:
+    type: text
+    mappings:
+      - type: from_llm
+  new_price_valid:
+    type: bool
+    initial_value: null
+    influence_conversation: false
+    mappings:
+      - type: from_llm
+  rollout_date:
+    type: text
+    mappings:
+      - type: from_llm
+  product_id:
+    type: text
+    mappings:
+      - type: from_llm
+  retries:
+    type: float
+    influence_conversation: false
+  product_id_valid:
+    type: bool
+    initial_value: null
+    influence_conversation: false
+  rollout_date_valid:
+    type: bool
+    initial_value: null
+    influence_conversation: false
+  product_name:
+    type: text
+    influence_conversation: false
+  confirmation:
+    type: text
+    initial_value: null
+    influence_conversation: false
+  price_modified:
+    type: bool
+  priceId:
+    type: text
+  priceCode:
+    type: text
+  previousPriceVersion:
+    type: text
+  previousPriceVersionCode:
+    type: text
+  product_category:
+    type: text
+  new_price_version_code:
+    type: text
+  old_version_id:
+    type: text
+  old_price_id:
+    type: text
+  new_price_version_id:
+    type: text
+  path:
+    type: text
+  versionId:
+    type: text
+  item_id:
+    type: text
+
+responses:
+  utter_ask_project_id:
+    - condition:
+        - type: slot
+          name: language
+          value: "en"
+      text: "Please provide the project ID."
+    - condition:
+        - type: slot
+          name: language
+          value: "ar"
+      text: "يرجى تقديم معرف المشروع."
+  utter_ask_project_name:
+    - condition:
+        - type: slot
+          name: language
+          value: "en"
+      text: "What do you want to call the project?"
+    - condition:
+        - type: slot
+          name: language
+          value: "ar"
+      text: "يرجى تقديم معرف المشروع."
+
+  utter_ask_product_id:
+    - condition:
+        - type: slot
+          name: language
+          value: "en"
+      text: "What is the product ID?"
+    - condition:
+        - type: slot
+          name: language
+          value: "ar"
+      text: "ما هو معرف المنتج؟"
+
+  utter_ask_confirmation:
+    - condition:
+        - type: slot
+          name: language
+          value: "en"
+      text: "Are you sure to proceed with these changes?"
+    - condition:
+        - type: slot
+          name: language
+          value: "ar"
+      text: "هل أنت متأكد من الاستمرار في هذه التغييرات؟"
+
+  utter_send_catalog_link:
+    - condition:
+        - type: slot
+          name: language
+          value: "en"
+      text: "Looks like you've entered an invalid product ID. Here is the link to the product catalog: DISPLAY_URL</#/dashboards/catalog?id={project_id}>."
+    - condition:
+        - type: slot
+          name: language
+          value: "ar"
+      text: "يبدو أنك قد أدخلت معرف منتج غير صالح. هنا هو الرابط إلى كتالوج المنتج: DISPLAY_URL</#/dashboards/catalog?id={project_id}>."
+
+  utter_help_with_product_id:
+    - condition:
+        - type: slot
+          name: language
+          value: "en"
+      text: "No problem. Here is a link to help you: DISPLAY_URL</#/dashboards/catalog?id={project_id}>."
+    - condition:
+        - type: slot
+          name: language
+          value: "ar"
+      text: "لا مشكلة. هنا رابط لمساعدتك: DISPLAY_URL</#/dashboards/catalog?id={project_id}>."
+
+  utter_summary_of_changes:
+    - condition:
+        - type: slot
+          name: language
+          value: "en"
+      text: "A new version of the product with ID {product_id} will be created with a price of SAR {new_price}, rolling out on {rollout_date}."
+    - condition:
+        - type: slot
+          name: language
+          value: "ar"
+      text: "سيتم إنشاء نسخة جديدة من المنتج بمعرف {product_id} بسعر {new_price} دولار، وسيتم تطبيقها في {rollout_date}."
+
+  utter_ask_new_price:
+    - condition:
+        - type: slot
+          name: language
+          value: "en"
+      text: "What is the new price?"
+    - condition:
+        - type: slot
+          name: language
+          value: "ar"
+      text: "ما هو السعر الجديد؟"
+
+  utter_invalid_price:
+    - condition:
+        - type: slot
+          name: language
+          value: "en"
+      text: "Invalid price!"
+    - condition:
+        - type: slot
+          name: language
+          value: "ar"
+      text: "سعر غير صالح!"
+
+  utter_ask_rollout_date:
+    - condition:
+        - type: slot
+          name: language
+          value: "en"
+      text: "What is the roll out date?"
+    - condition:
+        - type: slot
+          name: language
+          value: "ar"
+      text: "ما هو تاريخ الإطلاق؟"
+
+actions:
+  - action_set_language
+  - action_fetch_project_info
+  - action_create_project
+  - action_return_price_details
+  - action_validate_product_id
+  - action_extract_product_id
+  - action_validate_new_price
+  - action_validate_rollout_date
+  - action_modify_price
+  - action_reset_product_id

@@ -1,0 +1,7 @@
+{
+    "message": "The price has been successfully modified.",
+    "projectItem": {
+        "itemId": "mocked_item_id_5678",
+        "status": "Updated"
+    }
+}

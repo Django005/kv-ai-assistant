@@ -1,0 +1,35 @@
+{
+    "serviceCallResult": {
+        "result": [
+            {
+                "output": {
+                    "item": [
+                        {
+                            "id": "mocked_item_id",
+                            "field": [
+                                {
+                                    "name": "productTitle",
+                                    "displayValue": [
+                                        "Mocked Product"
+                                    ]
+                                },
+                                {
+                                    "name": "priceId",
+                                    "displayValue": [
+                                        "mocked_price_id"
+                                    ]
+                                },
+                                {
+                                    "name": "value",
+                                    "displayValue": [
+                                        "100.0"
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+}

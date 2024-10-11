@@ -1,0 +1,3 @@
+- have a translate file that, depending on the user language, we have to respond accordingly.
+- fix the references to non existent slots in validate product ID custom action
+- add distinguishable "i don't know" branch in flow by creating a new slot (product_id_given) and check if product_id is None or not in action_validate_product_id, and set the product_id_given accordingly

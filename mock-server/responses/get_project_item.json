@@ -1,0 +1,12 @@
+{
+    "projectItem": {
+        "item": {
+            "priceId": "mocked_price_id_1234",
+            "nextPriceVersion": "mocked_next_price_version",
+            "versionId": "mocked_version_id",
+            "nextPriceVersionCode": "mocked_price_version_code",
+            "productCategory": "mocked_product_category",
+            "path": "/mocked/project/item/path"
+        }
+    }
+}

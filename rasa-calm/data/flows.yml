@@ -1,0 +1,102 @@
+flows:
+  modify_price:
+    description: This flow lets users change the price of a product.
+    steps:
+      - action: action_set_language
+      - collect: project_name
+      - action: action_create_project
+      - collect: product_id
+      - action: action_validate_product_id
+        next:
+          - if: slots.product_id_valid is false
+            then:
+              - call: help_with_product_id
+              - action: action_reset_product_id # reset product ID slot for recollection
+              - collect: product_id # Re-collect the product ID
+              - action: action_validate_product_id
+                next:
+                  - if: slots.product_id_valid is false # check validity once more
+                    then:
+                      - call: help_with_product_id
+                        next: END # if at this time, product ID is still not valid, end the flow
+                  - else: # else continue with the rest of the steps
+                      - action: action_return_price_details
+                      - collect: new_price
+                      - action: action_validate_new_price
+                        next:
+                          - if: slots.new_price_valid is false
+                            then:
+                              - action: utter_invalid_price
+                              - collect: new_price # Re-collect the price if validation fails
+                              - action: utter_ask_new_price
+                              - action: action_validate_new_price
+                                next: END
+                          - else:
+                              - collect: rollout_date
+                              - action: action_validate_rollout_date
+                                next:
+                                  - if: slots.rollout_date_valid is false
+                                    then:
+                                      - collect: rollout_date # Re-collect the rollout date if validation fails
+                                        next: END
+                                  - else:
+                                      - action: utter_summary_of_changes
+                                      - collect: confirmation
+                                      - action: action_modify_price
+                                        next: END
+          - else:
+              - action: action_return_price_details
+              - collect: new_price
+              - action: action_validate_new_price
+                next:
+                  - if: slots.new_price_valid is false
+                    then:
+                      - action: utter_invalid_price
+                      - collect: new_price # Re-collect the price if validation fails
+                      - action: utter_ask_new_price
+                      - action: action_validate_new_price
+                        next: END
+                  - else:
+                      - collect: rollout_date
+                      - action: action_validate_rollout_date
+                        next:
+                          - if: slots.rollout_date_valid is false
+                            then:
+                              - collect: rollout_date # Re-collect the rollout date if validation fails
+                                next: END
+                          - else:
+                              - action: utter_summary_of_changes
+                              - collect: confirmation
+                              - action: action_modify_price
+                                next: END
+
+  help_with_product_id:
+    description: This flow helps users find a product ID, depending on if they simply don't know or if they have entered an invalid one.
+    steps:
+      - noop: true
+        next:
+          - if: not slots.product_id # if user doesn't know product ID
+            then:
+              - action: utter_help_with_product_id
+                next: END
+          - else:
+              - action: utter_send_catalog_link
+                next: END
+
+  check_product_id_validity:
+    description: This flow checks the validity of a product ID that the user provides and returns price details if given a valid product ID and returns a catalog link if the entered product ID is invalid.
+    steps:
+      - action: action_validate_product_id
+        next:
+          - if: slots.product_id_valid is true
+            then:
+              - action: action_return_price_details
+                next: END
+          - else:
+              - action: utter_send_catalog_link
+                next: END
+
+check_price_modification_cancelled:
+  description: This flow confirms the cancellation of the price modification.
+  steps:
+    - action: utter_price_modification_cancelled
